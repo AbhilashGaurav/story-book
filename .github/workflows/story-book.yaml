@@ -1,4 +1,4 @@
-name: Storybook Python CI/CD
+name: Storybook Python CI
 
 on:
   schedule:
