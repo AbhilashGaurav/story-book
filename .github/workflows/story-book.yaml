@@ -2,16 +2,15 @@ name: Storybook Python CI/CD
 
 on:
   schedule:
-    # Every day at 9 AM UTC (change cron as needed)
-    - cron: "0 23 * * *"
-  workflow_dispatch:   # Allow manual trigger from GitHub UI
+    - cron: "0 9 * * *"   # Every day at 9 AM UTC
+  workflow_dispatch:
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
+      # Step 1: Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -19,15 +18,26 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'   # or your required version
+          python-version: '3.11'
 
-      # Step 3: Install dependencies (if any)
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # Step 4: Run your script / command
-      - name: Run Storybook Script
-        run: |
-          echo "hello oen"   # OR your one-liner command
-          python main.py
+      # Step 4: Run your main script
+      - name: Run Storybook Pipeline
+        run: python main.py
+
+      # Step 5: Upload results (images, audio, videos, text)
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-output
+          path: |
+            clips_video/        # generated video clips
+            prompt/             # generated prompts/text
+            *.png               # images
+            *.mp3               # audio (mp3)
+            *.wav               # audio (wav)
+            *.mp4               # videos
