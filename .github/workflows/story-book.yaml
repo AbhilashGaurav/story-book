@@ -30,3 +30,4 @@ jobs:
       - name: Run Storybook Script
         run: |
           echo "hello oen"   # OR your one-liner command
+          python main.py
