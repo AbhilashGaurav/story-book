@@ -111,7 +111,12 @@ def characters_name(text):
         match_inline = re.search(r"Main Characters:\s*([^\n]+)", text)
         if match_inline:
             character_names = [name.strip() for name in match_inline.group(1).split(",")]
-
+    if len(character_names)<2:
+        if (len(character_names)==0:
+            character_names.append("Speaker 1")
+            character_names.append("Speaker 2")
+        elif (len(character_names)==1:
+            character_names.append("Speaker 2")
     return character_names
 def story_text():
     # Example usage: The prompt is now generated automatically.
@@ -143,4 +148,5 @@ def story_text():
 
     except Exception as e:
         print(f"Failed to generate dialogue: {e}")
+
 
