@@ -29,11 +29,13 @@ jobs:
       - name: Run Storybook Pipeline
         run: python main.py
         
-      - name: Install FFmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      
+       
       # step 5: combine clips
       - name: combine clips
-        run: ffmpeg -f concat -safe 0 -i clips_video/file_list.txt -c copy final_output.mp4
+        run: |
+              sudo apt-get update && sudo apt-get install -y ffmpeg
+              ffmpeg -f concat -safe 0 -i clips_video/file_list.txt -c copy final_output.mp4
       # step6: add audio to video
       - name: Add audio to the video
         run: ffmpeg -i output_final.mp4 -i ty.wav -c:v copy -c:a aac -shortest story_book.mp4
