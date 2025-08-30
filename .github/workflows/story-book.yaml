@@ -24,10 +24,13 @@ jobs:
       - name: Install dependencies
         run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
+      
       # Step 4: Run your main script
       - name: Run Storybook Pipeline
         run: python main.py
+        
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
       # step 5: combine clips
       - name: combine clips
         run: ffmpeg -f concat -safe 0 -i clips_video/file_list.txt -c copy final_output.mp4
