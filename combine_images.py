@@ -5,8 +5,8 @@ def combine_images():
   for i in range(0,10):
 
     # Open your two images
-    img1 = Image.open(f"image-api\\{i+1}.png")
-    img2 = Image.open(f"image-api\\story_with_text{i}.png")
+    img1 = Image.open(f"image-api/{i+1}.png")
+    img2 = Image.open(f"image-api/story_with_text{i}.png")
 
     # Resize both to half width (960x1080 each)
     img1 = img1.resize((960, 1080))
@@ -20,5 +20,6 @@ def combine_images():
     final_img.paste(img2, (960, 0))       # right
 
     # Save
-    final_img.save(f"image-api//combined_horizontal{i}.jpg")
+    final_img.save(f"image-api/combined_horizontal{i}.jpg")
+
   return True
