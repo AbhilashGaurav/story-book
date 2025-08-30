@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-
+  
       # Step 3: Install dependencies
       - name: Install dependencies
         run: |
@@ -28,16 +28,16 @@ jobs:
       # Step 4: Run your main script
       - name: Run Storybook Pipeline
         run: python main.py
+      # step 5: combine clips
+      - name: combine clips
+        run: ffmpeg -f concat -safe 0 -i clips_video/file_list.txt -c copy final_output.mp4
+      # step6: add audio to video
+      - name: Add audio to the video
+        run: ffmpeg -i output_final.mp4 -i ty.wav -c:v copy -c:a aac -shortest story_book.mp4
 
       # Step 5: Upload results (images, audio, videos, text)
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
           name: storybook-output
-          path: |
-            clips_video/        # generated video clips
-            prompt/             # generated prompts/text
-            *.png               # images
-            *.mp3               # audio (mp3)
-            *.wav               # audio (wav)
-            *.mp4               # videos
+          path: story_book.mp4
