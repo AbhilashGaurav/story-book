@@ -52,7 +52,7 @@ def separate_dialogue():
         auto_generated_prompt = f.read()
 
     character_names=characters_name(auto_generated_prompt)
-
+    print(character_names)
     total_count=0
     chunk_list=[]
     for i in range(0,len(audio_text)):
@@ -95,4 +95,5 @@ def separate_dialogue():
     
     
     
+
   
