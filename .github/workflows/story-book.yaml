@@ -38,7 +38,7 @@ jobs:
               ffmpeg -f concat -safe 0 -i clips_video/file_list.txt -c copy final_output.mp4
       # step6: add audio to video
       - name: Add audio to the video
-        run: ffmpeg -i output_final.mp4 -i ty.wav -c:v copy -c:a aac -shortest story_book.mp4
+        run: ffmpeg -i final_output.mp4 -i ty.wav -c:v copy -c:a aac -shortest story_book.mp4
 
       # Step 5: Upload results (images, audio, videos, text)
       - name: Upload results
