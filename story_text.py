@@ -97,8 +97,8 @@ Follow these rules strictly:
 def characters_name(text):
     character_names = []
 
-    # Case 1: Multiline format (names listed line by line after "Main Characters:")
-    match_block = re.search(r"Main Characters:\s*((?:.*\n)+?)(?=\d+\.|\Z)", text)
+    # Case 1: Multiline format
+    match_block = re.search(r"Main Characters:\s*\n+((?:.*\n)+?)(?=\d+\.|\Z)", text, re.IGNORECASE)
     if match_block:
         block = match_block.group(1)
         for line in block.splitlines():
@@ -106,17 +106,16 @@ def characters_name(text):
             if line and not line.lower().startswith("main characters"):
                 character_names.append(line)
 
-    # Case 2: Inline format (names after "Main Characters:" on same line)
+    # Case 2: Inline format
     if not character_names:
-        match_inline = re.search(r"Main Characters:\s*([^\n]+)", text)
+        text = text.replace("**", "")
+        match_inline = re.search(r"Main Characters:\s*(.*)", text, re.IGNORECASE)
         if match_inline:
-            character_names = [name.strip() for name in match_inline.group(1).split(",")]
-    if len(character_names)<2:
-        if (len(character_names)==0):
-            character_names.append("Speaker 1")
-            character_names.append("Speaker 2")
-        elif (len(character_names)==1):
-            character_names.append("Speaker 2")
+            inline_text = match_inline.group(1).strip()
+            # split on commas NOT inside parentheses
+            parts = re.split(r',(?![^(]*\))', inline_text)
+            character_names = [name.strip() for name in parts if name.strip()]
+
     return character_names
 def story_text():
     # Example usage: The prompt is now generated automatically.
@@ -148,6 +147,7 @@ def story_text():
 
     except Exception as e:
         print(f"Failed to generate dialogue: {e}")
+
 
 
 
