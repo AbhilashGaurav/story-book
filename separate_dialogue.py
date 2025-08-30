@@ -57,7 +57,10 @@ def separate_dialogue():
     chunk_list=[]
     for i in range(0,len(audio_text)):
       audio_text[i]=audio_text[i].replace("speaker 1: ","").replace("speaker 2: ", "").replace("\n","")
-      text_image[i]=text_image[i].replace("speaker 1: ","%%"+character_names[0] + ": ").replace("speaker 2: ", "%%"+character_names[1] + ": ").replace("\n","")
+      if len(character_names)>=2:
+          text_image[i]=text_image[i].replace("speaker 1: ","%%"+character_names[0] + ": ").replace("speaker 2: ", "%%"+character_names[1] + ": ").replace("\n","")
+      else:
+          text_image[i]=text_image[i].replace("speaker 1: ","%%"+"speaker 1" + ": ").replace("speaker 2: ", "%%"+"speaker 2" + ": ").replace("\n","")
       # print(text_image[i])
       
       # if i==0:
@@ -97,3 +100,4 @@ def separate_dialogue():
     
 
   
+
