@@ -94,25 +94,23 @@ Follow these rules strictly:
         print(f"An error occurred: {e}")
         raise
 
-#function to extract the characters name from the prompt
 def characters_name(text):
-    """
-    Extracts main character names from the story text.
-    Works for both 'Main Characters:' and '**Main Characters:**'.
-    """
-    # Regex to capture line after "Main Characters:"
-    pattern = r"(?:\*\*Main Characters:\*\*|Main Characters:)\s*(.+)"
-
-    match = re.search(pattern, text)
     character_names = []
-    if match:
-        names_text = match.group(1)
-        # Split by comma and strip spaces
-        character_names = [name.strip() for name in names_text.split(",")]
 
-    # Fetch first and second names safely
-    one_name = character_names[0] if character_names else None
-    second_name = character_names[1] if len(character_names) > 1 else None
+    # Case 1: Multiline format (names listed line by line after "Main Characters:")
+    match_block = re.search(r"Main Characters:\s*((?:.*\n)+?)(?=\d+\.|\Z)", text)
+    if match_block:
+        block = match_block.group(1)
+        for line in block.splitlines():
+            line = line.strip()
+            if line and not line.lower().startswith("main characters"):
+                character_names.append(line)
+
+    # Case 2: Inline format (names after "Main Characters:" on same line)
+    if not character_names:
+        match_inline = re.search(r"Main Characters:\s*([^\n]+)", text)
+        if match_inline:
+            character_names = [name.strip() for name in match_inline.group(1).split(",")]
 
     return character_names
 def story_text():
