@@ -97,8 +97,8 @@ Follow these rules strictly:
 def characters_name(text):
     character_names = []
 
-    # Case 1: Multiline format
-    match_block = re.search(r"Main Characters:\s*\n+((?:.*\n)+?)(?=\d+\.|\Z)", text, re.IGNORECASE)
+    # Case 1: Multiline format (handles ** around Main Characters)
+    match_block = re.search(r"\*{0,2}Main Characters:\*{0,2}\s*\n+((?:.*\n)+?)(?=\d+\.|\Z)", text, re.IGNORECASE)
     if match_block:
         block = match_block.group(1)
         for line in block.splitlines():
