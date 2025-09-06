@@ -14,7 +14,7 @@ import os
 # Story Segment: [Relevant dialogue/action for this page]
 
 
-def prompt_gen(prompt_text,YOUR_API_KEY):
+def prompt_gen(prompt_text,system_instruction,YOUR_API_KEY):
     """
     Generates content using a Gemini model with a system instruction.
     """
@@ -34,7 +34,7 @@ def prompt_gen(prompt_text,YOUR_API_KEY):
         # Correctly pass the API key and system instruction to the model
         model = genai.GenerativeModel(
             model_name='gemini-1.5-flash-latest',
-            system_instruction="Important instruction: 1.do complete it maximum 10 pages 2.do copy the style segement in each page rather then typing same as page 1 3.do show all the pages rather then showing Continue this format ",
+            system_instruction=system_instruction,
 
         )
 
@@ -130,7 +130,8 @@ def visual_image():
     Hindi Dialogue Script (for scene breakdown):
     take it from the above"""
     
-    illustration=prompt_gen(delta_prompt,API_KEY)
+    system_instruction="Important instruction: 1.do complete it maximum 10 pages 2.do copy the style segement in each page rather then typing same as page 1 3.do show all the pages rather then showing Continue this format "
+    illustration=prompt_gen(delta_prompt,system_instruction,API_KEY)
     # print(illustration_prompts)
     
     #do not add the Page 1
@@ -150,4 +151,13 @@ def visual_image():
         gen_image(common+pages[i]+"""Important Instruction:
     # Do not include any text, letters, numbers, or writing inside the image. Only visual storytelling.""",i,API_KEY)
 
-
+    # this is for thumbnail generation
+    intial_thumb_prompt="""Create a vibrant, cinematic YouTube thumbnail in 16:9 ratio, HD quality (1920x1080). Do add the title of the story book. Take the elements from the below:"""
+    # auto_generated_prompt=auto_generated_prompt.split("Premise:")[1]
+    # auto_generated_prompt=auto_generated_prompt.split("Premise:")[1]
+    thumbnail_prompt=intial_thumb_prompt+auto_generated_prompt
+    # print(thumbnail_prompt)
+    system_instruction="Help me to edit this prompt and generate and return the required prompt only other data should not be returned"
+    thumb_gen_auto=prompt_gen(thumbnail_prompt,system_instruction,API_KEY)
+    # print(thumb_gen_auto)
+    gen_image(thumb_gen_auto,"thumbnail",API_KEY)

@@ -1,0 +1,2 @@
+file 'thumbnail.mp4'
+file 'story_book.mp4'

@@ -21,5 +21,9 @@ def combine_images():
 
     # Save
     final_img.save(f"image-api/combined_horizontal{i}.jpg")
-
+  
+  # this is for thumbnail
+  img1 = Image.open(f"image-api/thumbnail.png")
+  img1 = img1.resize((1920, 1080))
+  img1.save("image-api/thumbnail.jpg")
   return True

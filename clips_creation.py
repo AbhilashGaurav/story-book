@@ -10,4 +10,8 @@ def clips_creation():
 
     # Write video
     clip.write_videofile(f"clips_video//output{i}.mp4", fps=24)
+  
+  #clips creation for thumbnail
+  thumb_clip = ImageClip(f"image-api//thumbnail.jpg", duration=3)  # 10 seconds
+  thumb_clip.write_videofile(f"clips_video//thumbnail.mp4", fps=24)
 
