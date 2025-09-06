@@ -40,7 +40,7 @@ jobs:
       - name: Add audio to the video
         run: |
               ffmpeg -i final_output.mp4 -i ty.wav -c:v copy -c:a aac -shortest clips_video/story_book.mp4
-              ffmpeg -i clips_video/thumbnail.mp4 -i thumbnail_audio.wav -c:v copy -c:a aac -shortest clips_video/thumbnail.mp4
+              ffmpeg -i clips_video/thumbnail.mp4 -i thumbnail_audio.wav -c:v copy -c:a aac -shortest clips_video/thumbnails.mp4
               ffmpeg -f concat -safe 0 -i clips_video/thumbnail_list.txt -c copy final_story_book.mp4
 
       # Step 5: Upload results (images, audio, videos, text)
