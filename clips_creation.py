@@ -1,5 +1,5 @@
 from moviepy.editor import ImageClip
-
+from pydub import AudioSegment
 from separate_dialogue import separate_dialogue
 
 def clips_creation():
@@ -12,6 +12,8 @@ def clips_creation():
     clip.write_videofile(f"clips_video//output{i}.mp4", fps=24)
   
   #clips creation for thumbnail
-  thumb_clip = ImageClip(f"image-api//thumbnail.jpg", duration=3)  # 10 seconds
+  audio = AudioSegment.from_file("thumbnail_audio.wav")
+  total_duration = len(audio) /1000 # in ms
+  thumb_clip = ImageClip(f"image-api//thumbnail.jpg", duration=total_duration)  # 10 seconds
   thumb_clip.write_videofile(f"clips_video//thumbnail.mp4", fps=24)
 

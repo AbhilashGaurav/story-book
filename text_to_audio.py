@@ -16,7 +16,7 @@ def save_binary_file(file_name, data):
     print(f"File saved to to: {file_name}")
 
 # generate function CHOOSE 1.model 2.speaker
-def generate(speakerData,modelName="gemini-2.5-pro-preview-tts",voice1="Gacrux",voice2="Puck"):
+def generate(speakerData,file_name='ty',modelName="gemini-2.5-pro-preview-tts",voice1="Gacrux",voice2="Puck"):
     client = genai.Client(
         api_key=YOUR_API_KEY,
     )
@@ -75,7 +75,7 @@ def generate(speakerData,modelName="gemini-2.5-pro-preview-tts",voice1="Gacrux",
         ):
             continue
         if chunk.candidates[0].content.parts[0].inline_data and chunk.candidates[0].content.parts[0].inline_data.data:
-            file_name = f"ty"
+            file_name = file_name
             file_index += 1
             inline_data = chunk.candidates[0].content.parts[0].inline_data
             data_buffer = inline_data.data
@@ -153,7 +153,11 @@ def text_to_audio():
     # this below will be the dialogue
     with open("prompt//dialogue.txt", "r",encoding="utf-8",errors="replace") as f:
         dialogue = f.read()
-    
+    with open("prompt//auto_generated_prompt.txt", "r",encoding="utf-8",errors="replace") as f:
+        auto_prompt = f.read()
+        
+    # this is for thumbnail
+    title = auto_prompt.replace("*","").split("Title:")[1].split("\n")[0].strip()
     print(dialogue)
     speakerData=dialogue
 
@@ -193,4 +197,5 @@ def text_to_audio():
     "Zephyr"
   ];
 
-    generate(speakerData,modelName,maleVoices[6],femaleVoices[5])
+    generate(speakerData,"ty",modelName,maleVoices[6],femaleVoices[5])
+    generate(title,"thumbnail_audio",modelName,maleVoices[6],femaleVoices[5])
