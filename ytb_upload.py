@@ -4,11 +4,11 @@ import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
 import google.generativeai as genai
-
+from api import YOUR_API_KEY
 # =====================================
 # 1. Gemini: Generate YouTube Metadata
 # =====================================
-API_KEY = "YOUR_GEMINI_API_KEY"  # Replace with your Gemini API Key
+API_KEY =  YOUR_API_KEY # Replace with your Gemini API Key
 
 def generate_youtube_metadata(content):
     genai.configure(api_key=API_KEY)
