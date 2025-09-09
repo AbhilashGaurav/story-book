@@ -49,3 +49,7 @@ jobs:
         with:
           name: storybook-output
           path: final_story_book.mp4
+      
+      - name: Upload in youtube
+        run: |
+              python ytb_upload.py
