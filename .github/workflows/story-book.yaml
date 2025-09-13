@@ -50,6 +50,9 @@ jobs:
           name: storybook-output
           path: final_story_book.mp4
       
-      # - name: Upload in youtube
-      #   run: |
-      #         python ytb_upload.py
+      - name: Upload in youtube
+        env:
+            YTB_CLIENT_ID: ${{ secrets.YTB_CLIENT_ID }}
+            YTB_CLIENT_SECRET: ${{ secrets.YTB_CLIENT_SECRET }}
+            YTB_REFRESH_TOKEN: ${{ secrets.YTB_REFRESH_TOKEN }}
+        run: python ytb_upload.py
