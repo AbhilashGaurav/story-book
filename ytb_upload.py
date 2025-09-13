@@ -115,7 +115,7 @@ if __name__ == "__main__":
     description = re.search(r"Description:\s*(.*?)(?:Keywords:|Tags:)", metadata, re.S).group(1).strip()
     tags_line = re.search(r"Tags:\s*(.*)", metadata, re.S).group(1)
     tags = [tag.strip() for tag in tags_line.split(",")]
-
+    tags= tags[:15]
     # Step 2: Upload video
     youtube, video_id = upload_video(
         file="final_story_book.mp4",
