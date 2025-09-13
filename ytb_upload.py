@@ -1,10 +1,14 @@
 import os
 import re
-import google_auth_oauthlib.flow
 import googleapiclient.discovery
-import googleapiclient.errors
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
 import google.generativeai as genai
 from api import YOUR_API_KEY
+# =====================================
+# 1. Gemini: Generate YouTube Metadata
+# =====================================
+ # Add this secret in GitHub Actions
 # =====================================
 # 1. Gemini: Generate YouTube Metadata
 # =====================================
@@ -30,7 +34,7 @@ Tags: ...
 
     model = genai.GenerativeModel(
         model_name="gemini-2.5-flash-preview-05-20",
-        system_instruction=system_instruction
+        system_instruction=system_instruction,
     )
 
     response = model.generate_content(content)
@@ -41,21 +45,29 @@ Tags: ...
 
 
 # =====================================
-# 2. YouTube Upload Functions
+# 2. YouTube Auth (Refresh Token Flow)
 # =====================================
-scopes = ["https://www.googleapis.com/auth/youtube.upload"]
+
+def get_youtube_service():
+    creds = Credentials(
+        None,
+        refresh_token=os.environ["YTB_REFRESH_TOKEN"],
+        token_uri="https://oauth2.googleapis.com/token",
+        client_id=os.environ["YTB_CLIENT_ID"],
+        client_secret=os.environ["YTB_CLIENT_SECRET"],
+        scopes=["https://www.googleapis.com/auth/youtube.upload"],
+    )
+    creds.refresh(Request())
+    youtube = googleapiclient.discovery.build("youtube", "v3", credentials=creds)
+    return youtube
+
+
+# =====================================
+# 3. YouTube Upload Functions
+# =====================================
 
 def upload_video(file, title, description, tags, category="22", privacy="public"):
-    # OAuth flow
-    flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-        "client_secret.json", scopes)
-    credentials = flow.run_local_server(port=0)
-
-    youtube = googleapiclient.discovery.build(
-        "youtube", "v3", credentials=credentials
-    )
-
-    # Upload video
+    youtube = get_youtube_service()
     request = youtube.videos().insert(
         part="snippet,status",
         body={
@@ -63,25 +75,21 @@ def upload_video(file, title, description, tags, category="22", privacy="public"
                 "categoryId": category,
                 "title": title,
                 "description": description,
-                "tags": tags
+                "tags": tags,
             },
-            "status": {
-                "privacyStatus": privacy
-            }
+            "status": {"privacyStatus": privacy},
         },
-        media_body=file
+        media_body=file,
     )
     response = request.execute()
     video_id = response["id"]
-
     print("✅ Upload successful! Video ID:", video_id)
     return youtube, video_id
 
 
 def set_thumbnail(youtube, video_id, thumbnail_file):
     request = youtube.thumbnails().set(
-        videoId=video_id,
-        media_body=thumbnail_file
+        videoId=video_id, media_body=thumbnail_file
     )
     response = request.execute()
     print("✅ Thumbnail uploaded!")
@@ -89,19 +97,20 @@ def set_thumbnail(youtube, video_id, thumbnail_file):
 
 
 # =====================================
-# 3. Run the End-to-End Workflow
+# 4. Run the End-to-End Workflow
 # =====================================
+
 if __name__ == "__main__":
-    # Load your script/summary
-    with open("prompt//auto_generated_prompt.txt", "r", encoding="utf-8", errors="replace") as f:
+    # Load your script/summary for Gemini
+    with open("prompt/auto_generated_prompt.txt", "r", encoding="utf-8", errors="replace") as f:
         video_content = f.read()
 
-    # Step 1: Get SEO metadata from Gemini
+    # Step 1: Get SEO metadata
     metadata = generate_youtube_metadata(video_content)
-    metadata.replace("*","")
+    metadata = metadata.replace("*", "")
     print("\n--- Generated Metadata ---\n", metadata, "\n")
 
-    # Parse the response
+    # Parse metadata
     title = re.search(r"Title:\s*(.*)", metadata).group(1)
     description = re.search(r"Description:\s*(.*?)(?:Keywords:|Tags:)", metadata, re.S).group(1).strip()
     tags_line = re.search(r"Tags:\s*(.*)", metadata, re.S).group(1)
@@ -114,8 +123,8 @@ if __name__ == "__main__":
         description=description,
         tags=tags,
         category="22",
-        privacy="public"
+        privacy="public",
     )
 
     # Step 3: Upload thumbnail
-    set_thumbnail(youtube, video_id, "image-api//thumbnail.png")
+    set_thumbnail(youtube, video_id, "image-api/thumbnail.png")
