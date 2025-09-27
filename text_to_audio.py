@@ -7,7 +7,8 @@ import re
 import struct
 from google import genai
 from google.genai import types
-from api import YOUR_API_KEY
+
+YOUR_API_KEY=os.environ.get('YOUR_API_KEY')
 #save the binary data while converting the text to speech
 def save_binary_file(file_name, data):
     f = open(file_name, "wb")

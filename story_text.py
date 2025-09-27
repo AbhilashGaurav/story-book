@@ -2,10 +2,10 @@
 import google.generativeai as genai
 import os
 import re
-from api import YOUR_API_KEY
+
 # Your API key. Leave this as an empty string; the environment will provide it at runtime.
 # If you want to use models other than gemini-2.5-flash-preview-05-20, provide an API key here.
-API_KEY = YOUR_API_KEY
+API_KEY = os.environ.get('YOUR_API_KEY')
 
 def generate_creative_prompt(topic: str = "A mundane everyday event.") -> str:
 

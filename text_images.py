@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import separate_dialogue
-from PIL import Image, ImageDraw, ImageFont
 import math
 
 def generate_text_image(

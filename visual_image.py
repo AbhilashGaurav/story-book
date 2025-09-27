@@ -4,13 +4,10 @@ import requests, base64
 from PIL import Image
 from io import BytesIO
 import re
-from api import YOUR_API_KEY
-# from illustartion_prompt import prompt_gen
-
 import google.generativeai as genai
 import os
-# from api import YOUR_API_KEY
 
+YOUR_API_KEY=os.environ.get('YOUR_API_KEY')
 # Story Segment: [Relevant dialogue/action for this page]
 
 
@@ -105,7 +102,7 @@ def gen_image(prompt,image_num,API_KEY):
 
 def visual_image():
     # 🔑 Your Gemini API key
-    API_KEY = "REMOVED_API_KEY"
+    API_KEY = os.environ.get('YOUR_API_KEY')
 # delta prompt generation
     with open("prompt//auto_generated_prompt.txt", "r", encoding="utf-8") as f:
         auto_generated_prompt = f.read()
