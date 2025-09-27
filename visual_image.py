@@ -30,7 +30,7 @@ def prompt_gen(prompt_text,system_instruction,YOUR_API_KEY):
 
         # Correctly pass the API key and system instruction to the model
         model = genai.GenerativeModel(
-            model_name='gemini-2.0-flash-latest',
+            model_name='gemini-2.0-flash',
             system_instruction=system_instruction,
 
         )
