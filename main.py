@@ -6,7 +6,9 @@ import combine_images
 import clips_creation
 import os
 # from api import YOUR_API_KEY
-print(os.environ["YOUR_API_KEY"])
+api_key=os.environ.get('YOUR_API_KEY')
+print("api_key",api_key)
+
 #1 run the below one time as the story will be changed as each time new story will be generated
 # story_text.story_text()
 # print("done story text")
