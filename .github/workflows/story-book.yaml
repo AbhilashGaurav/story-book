@@ -55,4 +55,5 @@ jobs:
             YTB_CLIENT_ID: ${{ secrets.YTB_CLIENT_ID }}
             YTB_CLIENT_SECRET: ${{ secrets.YTB_CLIENT_SECRET }}
             YTB_REFRESH_TOKEN: ${{ secrets.YTB_REFRESH_TOKEN }}
+            YOUR_API_KEY: ${{ secrets.YOUR_API_KEY}}
         run: python ytb_upload.py
