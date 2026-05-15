@@ -5,6 +5,7 @@
 
 
 
+
 **Gemini Storybook 2.0** is an AI-powered storytelling pipeline that automates the creation of story videos — from text generation to audio, visuals, video assembly, and YouTube publishing.  
 
 This is an upgraded and fully automated version of my earlier Storybook project, leveraging **LLM, TTS, AI illustrations, and video automation**.
